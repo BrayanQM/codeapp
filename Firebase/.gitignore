@@ -1,0 +1,22 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+/coneccion.md
+
+# Claves de servicedesk / credenciales: NUNCA subir al repositorio ni al APK
+# (google-services.json NO va aqui: es configuracion publica y si se versiona)
+*firebase-adminsdk*.json
+*service-account*.json
+/service-account*.json

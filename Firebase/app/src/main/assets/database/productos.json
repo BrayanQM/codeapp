@@ -1,0 +1,21 @@
+{
+  "-Nseed001": {
+    "nombre": "Teclado mecanico",
+    "descripcion": "Teclado RGB con switches",
+    "precio": 89.9,
+    "stock": 12
+  },
+  "-Nseed002": {
+    "nombre": "Mouse inalambrico",
+    "descripcion": "Mouse ergonomico con receptor USB",
+    "precio": 34.5,
+    "stock": 25
+  },
+  "-Nseed003": {
+    "nombre": "Auriculares",
+    "descripcion": "Cascos Bluetooth con cancelacion de ruido",
+    "precio": 119.0,
+    "stock": 8
+  }
+
+}

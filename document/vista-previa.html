@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vista previa - Conectar Firebase a tu APK Android</title>
+<style>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #1a1a2e;
+    color: #eaeaea;
+  }
+
+  .slide {
+    width: 100%;
+    min-height: 100vh;
+    padding: 50px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #6c3fc5;
+    page-break-after: always;
+    position: relative;
+  }
+
+  .slide:nth-child(even) { background: #16213e; }
+
+  h1 {
+    font-size: 2.2em;
+    color: #b794f6;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #6c3fc5;
+    padding-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 1.8em;
+    color: #b794f6;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #6c3fc5;
+    padding-bottom: 8px;
+  }
+
+  h3 {
+    font-size: 1.3em;
+    color: #d6bcfa;
+    margin: 20px 0 10px 0;
+  }
+
+  p, li {
+    font-size: 1.15em;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  ul, ol { margin-left: 28px; margin-bottom: 15px; }
+
+  .cover { text-align: center; align-items: center; justify-content: center; }
+
+  .cover h1 { font-size: 2.6em; border: none; }
+
+  .cover .sub { font-size: 1.3em; color: #d6bcfa; margin: 20px 0 40px 0; }
+
+  .cover .info { font-size: 1.1em; line-height: 2; color: #cbd5e0; }
+  .cover .info strong { color: #b794f6; }
+
+  .img-placeholder {
+    width: 100%;
+    max-width: 600px;
+    min-height: 200px;
+    border: 3px dashed #6c3fc5;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    color: #6c3fc5;
+    text-align: center;
+    padding: 20px;
+    background: rgba(108, 63, 197, 0.08);
+    font-size: 1em;
+  }
+
+  .img-placeholder img {
+    max-width: 100%;
+    max-height: 420px;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .logo-placeholder {
+    width: 130px;
+    height: 130px;
+    border: 3px dashed #6c3fc5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px auto;
+    color: #6c3fc5;
+    font-size: 0.85em;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .logo-placeholder img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: contain;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 1.05em;
+  }
+
+  th, td {
+    border: 1px solid #6c3fc5;
+    padding: 12px 16px;
+    text-align: left;
+  }
+
+  th { background: #6c3fc5; color: #fff; }
+
+  tr:nth-child(even) { background: rgba(108, 63, 197, 0.12); }
+
+  code {
+    background: #0f0f1a;
+    color: #a3e635;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+  }
+
+  .step-num {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: #6c3fc5;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-right: 12px;
+  }
+
+  .slide-number {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    font-size: 0.9em;
+    color: #6c3fc5;
+    font-weight: bold;
+  }
+
+  .img-placeholder.pequeno { max-width: 420px; min-height: 0; padding: 10px; margin: 12px auto; }
+  .img-placeholder.pequeno img { max-height: 200px; }
+
+  p.compacto { font-size: 1em; line-height: 1.45; }
+
+  .trio {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin: 18px 0 8px;
+  }
+
+  .trio figure { margin: 0; text-align: center; }
+
+  .trio img {
+    width: 200px;
+    border-radius: 8px;
+    border: 2px solid #6c3fc5;
+    display: block;
+  }
+
+  .trio figcaption {
+    color: #d6bcfa;
+    font-size: 0.85em;
+    margin-top: 6px;
+  }
+
+  .nota {
+    font-size: 0.9em;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.12);
+    border-left: 4px solid #f59e0b;
+    padding: 10px 14px;
+    margin-top: 15px;
+  }
+
+  @media print {
+    .slide { min-height: auto; padding: 35px; }
+  }
+</style>
+body { background:#0f0f1a; }
+
+.tablero { max-width:1100px; margin:0 auto; padding:50px 40px 20px; }
+.tablero h1 { font-size:2em; margin-bottom:8px; }
+.tablero h2 { font-size:1.3em; margin:30px 0 10px; }
+.ayuda { color:#cbd5e0; margin:12px 0; line-height:1.7; }
+.progreso { margin:20px 0; }
+.barra { height:16px; background:#16213e; border-radius:8px; overflow:hidden; border:1px solid #6c3fc5; }
+.relleno { height:100%; background:linear-gradient(90deg,#6c3fc5,#a3e635); }
+.cuenta { margin-top:8px; color:#a3e635; font-weight:bold; font-size:1.05em; }
+.tablero table { font-size:0.95em; }
+.tablero code { font-size:0.9em; }
+
+.envoltorio { margin:0 auto 46px; max-width:1280px; }
+.etiqueta { background:#0f0f1a; color:#a3e635; font-weight:bold; padding:10px 18px;
+  font-size:1.05em; border-left:5px solid #a3e635; }
+.marco { border:2px solid #6c3fc5; }
+
+.falta { border:3px dashed #e11d48; border-radius:12px; background:rgba(225,29,72,.10);
+  padding:22px; text-align:center; color:#fda4af; font-family:'Courier New',monospace; }
+.falta-titulo { color:#e11d48; font-weight:bold; font-size:1.1em; margin-bottom:10px; }
+.falta-nombre { color:#fbbf24; font-size:1.15em; font-weight:bold; margin-bottom:12px;
+  word-break:break-all; }
+.falta-dato { font-size:0.88em; line-height:1.7; }
+</style>
+</head>
+<body>
+
+  <div class="tablero">
+    <h1>Vista previa de la presentacion</h1>
+    <div class="progreso">
+      <div class="barra"><div class="relleno" style="width:100%"></div></div>
+      <div class="cuenta">14 de 14 imagenes listas (100%)</div>
+    </div>
+    <p class="ayuda">Las cajas rojas son imagenes que todavia no tomaste. Abri este archivo
+    en el navegador y las vas viendo aparecer a medida que las agregues a la carpeta
+    <code>imagenes/</code>. Recarga la pagina (F5) para actualizarlas.</p>
+    <h2>Te falta tomar estas 0 capturas</h2>
+    <table>
+      <tr><th>Nombre del archivo</th><th>Donde mirarlo</th><th>Lineas</th><th>Que debe verse</th></tr>
+      
+    </table>
+    <h2>Como se toman</h2>
+    <ol>
+      <li>En Android Studio: <code>Ctrl+P</code>, escribi el nombre del archivo, <code>Enter</code>.</li>
+      <li>Pose el cursor en la linea de inicio y presiona <code>Shift+Alt+flecha abajo</code>
+          hasta la linea de fin.</li>
+      <li>Copia con <code>Ctrl+C</code> y pega en un editor o en Paint/WPS.</li>
+      <li>Captura la zona <strong>con los numeros de linea visibles</strong>: eso prueba
+          que el codigo es real.</li>
+      <li>Guarda con el nombre exacto de la primera columna, dentro de la carpeta
+          <code>imagenes/</code>.</li>
+    </ol>
+  </div>
+
+<div class="envoltorio"><div class="etiqueta">Diapositiva 1 &mdash; CONECTAR FIREBASE A TU APK ANDROID</div><div class="marco"><section class="slide cover">
+  <div class="logo-placeholder"><img src="imagenes/logo_uf.png" alt="Logo UFTA"></div>
+  <h1>CONECTAR FIREBASE A TU APK ANDROID</h1>
+  <p class="sub">API REST de Productos con Realtime Database</p>
+  <div class="info">
+    <p><strong>Brayan Quispe Mamani</strong></p>
+    <p>Programación de Dispositivos Móviles</p>
+    <p>Universidad Franz Tamayo — 2026</p>
+  </div>
+  <span class="slide-number">1</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 2 &mdash; La Idea en 30 Segundos</div><div class="marco"><section class="slide">
+  <h2>La Idea en 30 Segundos</h2>
+  <p>Tu app Android <strong>no se conecta directo</strong> a Firebase con un SDK pesado. En su lugar:</p>
+  <ol>
+    <li>Firebase Realtime Database <strong>expone una URL REST</strong>.</li>
+    <li>Tu app hace peticiones <strong>HTTP</strong> (GET, POST, PATCH, DELETE).</li>
+    <li>Los datos viajan en <strong>JSON</strong>.</li>
+    <li>Vos controlás todo con <code>HttpURLConnection</code> y corrutinas.</li>
+  </ol>
+  <div class="img-placeholder"><img src="imagenes/diagrama_flujo.png" alt="Diagrama"></div>
+  <span class="slide-number">2</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 3 &mdash; 1 Crear el proyecto en Firebase</div><div class="marco"><section class="slide">
+  <h2><span class="step-num">1</span> Crear el proyecto en Firebase</h2>
+  <ul>
+    <li>Entrá a <strong>console.firebase.google.com</strong> y elegí <em>Agregar proyecto</em>.</li>
+    <li>Ponele un nombre: <code>classfirebase-d856a</code>.</li>
+    <li>En el menú lateral: <strong>Realtime Database</strong> y luego <em>Crear base de datos</em>.</li>
+    <li>Elegí <strong>modo de prueba</strong> (para desarrollo).</li>
+    <li>Copiá la URL que aparece arriba:<br>
+      <code>https://classfirebase-d856a-default-rtdb.firebaseio.com</code>
+    </li>
+  </ul>
+  <div class="img-placeholder"><img src="imagenes/consola_firebase_url.png" alt="Consola Firebase"></div>
+  
+  <span class="slide-number">3</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 4 &mdash; 2 Guardar la URL en el proyecto Android</div><div class="marco"><section class="slide">
+  <h2><span class="step-num">2</span> Guardar la URL en el proyecto Android</h2>
+  <p>En <code>local.properties</code> (nunca en el código):</p>
+  <p><code>firebase.db.url=https://classfirebase-d856a-default-rtdb.firebaseio.com</code></p>
+  <p>En <code>app/build.gradle.kts</code> del módulo:</p>
+  <p><code>buildConfigField("String", "FIREBASE_DB_URL", "\"${config("firebase.db.url")}\"")</code></p>
+  <p>Y activá <code>buildFeatures { buildConfig = true }</code>.</p>
+  <div class="trio">
+    <img src="imagenes/codigo_build_gradle_8_13.png" alt="localProperties">
+    <img src="imagenes/codigo_build_gradle_30_33.png" alt="buildConfigField">
+  </div>
+  
+  <span class="slide-number">4</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 5 &mdash; 3 Definir el modelo y las operaciones</div><div class="marco"><section class="slide">
+  <h2><span class="step-num">3</span> Definir el modelo y las operaciones</h2>
+  <table>
+    <tr><th>Operación</th><th>Método HTTP</th><th>URL</th></tr>
+    <tr><td>Listar</td><td>GET</td><td><code>/productos.json</code></td></tr>
+    <tr><td>Crear</td><td>POST</td><td><code>/productos.json</code></td></tr>
+    <tr><td>Editar</td><td>PATCH</td><td><code>/productos/&lt;id&gt;.json</code></td></tr>
+    <tr><td>Eliminar</td><td>DELETE</td><td><code>/productos/&lt;id&gt;.json</code></td></tr>
+  </table>
+  <p>El <code>.json</code> al final es <strong>obligatorio</strong> en Firebase REST.</p>
+  <p>La URL se arma en código, no se escribe a mano:</p>
+  <p><code>private fun rutaRaiz() = "$urlBase/$COLECCION.json"</code></p>
+  <div class="img-placeholder"><img src="imagenes/codigo_rutas.png" alt="Rutas y metodos HTTP"></div>
+  <span class="slide-number">5</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 6 &mdash; 4 Hacer la petición desde Kotlin</div><div class="marco"><section class="slide">
+  <h2><span class="step-num">4</span> Hacer la petición desde Kotlin</h2>
+  <p>Dentro de una función que se ejecuta en un hilo secundario:</p>
+  <p><code>val conexion = (URL(url).openConnection() as HttpURLConnection).apply {</code></p>
+  <p><code>&nbsp;&nbsp;&nbsp;&nbsp;requestMethod = metodo</code></p>
+  <p><code>&nbsp;&nbsp;&nbsp;&nbsp;connectTimeout = TIEMPO_LIMITE_MS</code></p>
+  <p><code>}</code></p>
+  <p>Esa respuesta es un <strong>JSON</strong> que convertís a tus objetos <code>Producto</code>.</p>
+  <div class="img-placeholder"><img src="imagenes/codigo_http.png" alt="HttpURLConnection"></div>
+  <span class="slide-number">6</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 7 &mdash; 5 Cuidado con el hilo principal</div><div class="marco"><section class="slide">
+  <h2><span class="step-num">5</span> Cuidado con el hilo principal</h2>
+  <ul>
+    <li>Las peticiones de red <strong>no pueden ir en el hilo principal</strong>.</li>
+    <li>El repositorio envuelve todo el acceso en <code>withContext(Dispatchers.IO)</code>.</li>
+    <li>La interfaz lanza la operación con <code>alcance.launch { ... }</code> y actualiza el estado al terminar.</li>
+  </ul>
+  <div class="img-placeholder"><img src="imagenes/codigo_corrutina.png" alt="Corrutinas"></div>
+  
+  <span class="slide-number">7</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 8 &mdash; Errores que te van a aparecer</div><div class="marco"><section class="slide">
+  <h2>Errores que te van a aparecer</h2>
+  <table>
+    <tr><th>Código</th><th>Qué significa</th><th>Solución</th></tr>
+    <tr><td><strong>404</strong></td><td>La base de datos no existe</td><td>Creala en la consola Firebase</td></tr>
+    <tr><td><strong>401/403</strong></td><td>Reglas de seguridad bloquean</td><td>Ajustá las Security Rules</td></tr>
+    <tr><td><strong>400</strong></td><td>JSON mal formado</td><td>Revisá el body que enviás</td></tr>
+  </table>
+  <p>El error más común: <strong>olvidarse el <code>.json</code></strong> al final de la URL.</p>
+  <div class="img-placeholder"><img src="imagenes/codigo_errores.png" alt="Manejo de errores"></div>
+  <span class="slide-number">8</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 9 &mdash; Seguridad: lo que NO hay que hacer</div><div class="marco"><section class="slide">
+  <h2>Seguridad: lo que NO hay que hacer</h2>
+  <ul>
+    <li>No uses <em>database secrets</em>: <strong>Firebase las eliminó en 2024</strong>.</li>
+    <li>No pongas la URL hardcodeada en el código.</li>
+    <li>No dejes la base en modo prueba en producción.</li>
+  </ul>
+  <h3>Lo correcto</h3>
+  <ul>
+    <li>Configurar <strong>Security Rules</strong> por nodo y por usuario.</li>
+    <li>Guardar la URL en <code>local.properties</code>.</li>
+    <li>Usar <strong>Firebase Auth</strong> si necesitás usuarios.</li>
+  </ul>
+  <div class="img-placeholder pequeno"><img src="imagenes/consola_security_rules.png" alt="Security Rules"></div>
+
+  <h3>Lo que dice mi regla actual</h3>
+  <p class="compacto"><code>".read": "now &lt; 1793160000000"</code> &nbsp; <code>".write": "now &lt; 1793160000000"</code><br>
+     <strong>Es una bomba de tiempo.</strong> Ese n&uacute;mero es una marca de tiempo Unix: el <strong>28/10/2026</strong>.
+     Ese d&iacute;a <code>now</code> deja de ser menor, la regla da <code>false</code> y la app deja de leer y escribir
+     <strong>sin tocar una l&iacute;nea de c&oacute;digo</strong>. En producci&oacute;n se reemplaza por reglas con <code>auth</code>.</p>
+  <span class="slide-number">9</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 10 &mdash; Resultado Final</div><div class="marco"><section class="slide">
+  <h2>Resultado Final</h2>
+  <ul>
+    <li>App Android que <strong>lista, crea, edita y elimina</strong> productos.</li>
+    <li>Datos sincronizados con <strong>Firebase Realtime Database</strong>.</li>
+    <li>Respaldo local en <strong>JSON</strong> por si falla la red.</li>
+    <li>Los 5 endpoints responden <strong>HTTP 200</strong>.</li>
+  </ul>
+  <div class="trio">
+    <figure><img src="imagenes/app_lista.png" alt="Lista de productos"><figcaption>Listar productos</figcaption></figure>
+    <figure><img src="imagenes/app_formulario.png" alt="Formulario de alta"><figcaption>Crear y editar</figcaption></figure>
+    <figure><img src="imagenes/app_confirmacion.png" alt="Confirmacion de borrado"><figcaption>Eliminar</figcaption></figure>
+  </div>
+  <div class="img-placeholder"><img src="imagenes/app_y_firebase.png" alt="App y Firebase"></div>
+  <span class="slide-number">10</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 11 &mdash; Conclusión</div><div class="marco"><section class="slide">
+  <h2>Conclusión</h2>
+  <p style="font-size:1.3em; line-height:1.8;">
+    Conectar Firebase a tu APK <strong>no es magia</strong>: es hacer peticiones HTTP a una URL, mandar y recibir JSON, y cuidar las reglas de seguridad.
+  </p>
+  <p style="font-size:1.3em; line-height:1.8;">
+    Lo más importante: <strong>diagnosticar mirando al servidor</strong>, no suponer que el error está en la app.
+  </p>
+  <span class="slide-number">11</span>
+</section></div></div><div class="envoltorio"><div class="etiqueta">Diapositiva 12 &mdash; ¡Gracias!</div><div class="marco"><section class="slide cover">
+  <h1>¡Gracias!</h1>
+  <div class="info">
+    <p><strong>Brayan Quispe Mamani</strong></p>
+    <p>Universidad Franz Tamayo — 2026</p>
+  </div>
+  <span class="slide-number">12</span>
+</section></div></div>
+</body>
+</html>
